@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="Test1"
+	Name="shaders"
 	ProjectGUID="{A1629DD3-6274-42FD-8F6D-75918D1BB1EC}"
 	RootNamespace="Test1"
 	Keyword="Win32Proj"

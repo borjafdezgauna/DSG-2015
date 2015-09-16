@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fixed-pipeline Open-GL", "OpenGL-base\Lab1.vcxproj", "{A1629DD3-6274-42FD-8F6D-75918D1BB1EC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Programmable-pipeline Open-GL", "OpenGL-shaders\OpenGL-shaders.vcxproj", "{D9FAF272-1087-4E7B-A66A-D7F7D468FCDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1629DD3-6274-42FD-8F6D-75918D1BB1EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1629DD3-6274-42FD-8F6D-75918D1BB1EC}.Debug|Win32.Build.0 = Debug|Win32
+		{A1629DD3-6274-42FD-8F6D-75918D1BB1EC}.Release|Win32.ActiveCfg = Release|Win32
+		{A1629DD3-6274-42FD-8F6D-75918D1BB1EC}.Release|Win32.Build.0 = Release|Win32
+		{D9FAF272-1087-4E7B-A66A-D7F7D468FCDD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D9FAF272-1087-4E7B-A66A-D7F7D468FCDD}.Debug|Win32.Build.0 = Debug|Win32
+		{D9FAF272-1087-4E7B-A66A-D7F7D468FCDD}.Release|Win32.ActiveCfg = Release|Win32
+		{D9FAF272-1087-4E7B-A66A-D7F7D468FCDD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
