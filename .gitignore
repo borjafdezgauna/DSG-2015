@@ -1,0 +1,19 @@
+*.tlog
+Debug/Fixed-pipeline Open-GL.exe
+OpenGL-shaders/Debug/vc120.pdb
+OpenGL-shaders/Debug/vc120.idb
+OpenGL-shaders/Debug/stdafx.obj
+OpenGL-shaders/Debug/main.obj
+OpenGL-shaders/Debug/Programmable-pipeline Open-GL.pch
+OpenGL-shaders/Debug/GLExtensions.obj
+*.log
+OpenGL-base/Debug/stdafx.obj
+OpenGL-base/Debug/vc120.idb
+*.obj
+Debug/Programmable-pipeline Open-GL.exe
+Debug/Programmable-pipeline Open-GL.pdb
+Debug/Programmable-pipeline Open-GL.ilk
+*.ipch
+Debug/Fixed-pipeline Open-GL.ilk
+OpenGL-base/Debug/Fixed-pipeline Open-GL.pch
+OpenGL-base/Debug/vc120.pdb

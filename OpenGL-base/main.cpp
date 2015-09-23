@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 
-#define MOVE_STEP .4
-#define ANGLE_STEP 0.2
+#define MOVE_STEP .004
+#define ANGLE_STEP .02
 #define PI 3.1416f
 
 float g_x=0.0f;
@@ -17,20 +17,83 @@ int g_w;
 int g_h;
 float g_cubeAngle= 0.f;
 
+// Keyboard
+bool up_pressed = false;
+bool down_pressed = false;
+bool left_pressed = false;
+bool right_pressed = false;
 
+// Mouse
+bool mouse_left_clicked = false;
+int initialPos = 0;
+int mouseXDiff = 0;
 
-void Keyboard(unsigned char key,int x, int y)
+void Mouse(int button, int state, int x, int y)
 {
+	switch (button) 
+	{
+	case GLUT_LEFT_BUTTON:
+		switch (state)
+		{
+		case GLUT_DOWN:
+			mouse_left_clicked = true;
+			initialPos = x;
+			break;
+		case GLUT_UP:
+			mouse_left_clicked = false;
+			break;
+		}		
+		break;
+	}
+}
+
+void MouseMotion(int x, int y)
+{
+	mouseXDiff = x - initialPos;
+}
+
+void Keyboard(unsigned char key, int x, int y)
+{
+	/*
 	//keyboard callback function
 	switch (key)
 	{
-	case '8':	g_x-= MOVE_STEP*sin(g_yaw*PI/180);
-				g_z-= MOVE_STEP*cos(g_yaw*PI/180);break;
-	case '2':	g_x+= MOVE_STEP*sin(g_yaw*PI/180);
-				g_z+= MOVE_STEP*cos(g_yaw*PI/180);break;
-	case '6': g_yaw-= ANGLE_STEP; break;
-	case '4': g_yaw+= ANGLE_STEP; break;
-	case 27: exit(0);
+	case '8':
+		g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
+		g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
+		break;
+	case '2':	
+		g_x+= MOVE_STEP*sin(g_yaw*PI/180);
+		g_z+= MOVE_STEP*cos(g_yaw*PI/180);
+		break;
+	case '6': 
+		g_yaw-= ANGLE_STEP;
+		break;
+	case '4': 
+		g_yaw+= ANGLE_STEP;
+		break;
+	case 27: 
+		exit(0);
+	}
+	*/
+
+	//keyboard callback function
+	switch (key)
+	{
+	case '8':
+		up_pressed = !up_pressed;
+		break;
+	case '2':
+		down_pressed = !down_pressed;
+		break;
+	case '6':
+		right_pressed = !right_pressed;
+		break;
+	case '4':
+		left_pressed = !left_pressed;
+		break;
+	case 27:
+		exit(0);
 	}
 }
 
@@ -95,13 +158,17 @@ int main(int argc, char** argv)
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (1024, 768); 
 	glutCreateWindow (argv[0]);
-	glutFullScreen();
+	//glutFullScreen();
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 
 
 	//callback functions
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(Keyboard);
+	glutKeyboardUpFunc(Keyboard);
+	glutMouseFunc(Mouse);
+	glutMotionFunc(MouseMotion);
 
 
 	while (1)
@@ -110,6 +177,33 @@ int main(int argc, char** argv)
 		////////////////////////////
 		//"move" the cube
 		g_cubeAngle+= 0.1;
+
+		if (up_pressed)
+		{
+			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+
+		if (down_pressed)
+		{
+			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+
+		if (left_pressed)
+		{
+			g_yaw -= ANGLE_STEP;
+		}
+
+		if (right_pressed)
+		{
+			g_yaw += ANGLE_STEP;
+		}
+
+		if (mouse_left_clicked) {
+			g_yaw += mouseXDiff * 0.0001;
+		}
+
 		//queued events?
 		glutMainLoopEvent();
 
