@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 
-#define MOVE_STEP .4
-#define ANGLE_STEP 0.2
+#define MOVE_STEP .008
+#define ANGLE_STEP 0.08
 #define PI 3.1416f
 
 float g_x=0.0f;
@@ -16,7 +16,11 @@ float g_yaw= 0.0f;
 int g_w;
 int g_h;
 float g_cubeAngle= 0.f;
-
+bool ocho, dos, seis, cuatro, botonPulsado = false;
+int mouseInicialX;
+int mouseInicialY;
+int mouseDeltaX;
+int mouseDeltaY;
 
 
 void Keyboard(unsigned char key,int x, int y)
@@ -24,13 +28,52 @@ void Keyboard(unsigned char key,int x, int y)
 	//keyboard callback function
 	switch (key)
 	{
-	case '8':	g_x-= MOVE_STEP*sin(g_yaw*PI/180);
-				g_z-= MOVE_STEP*cos(g_yaw*PI/180);break;
-	case '2':	g_x+= MOVE_STEP*sin(g_yaw*PI/180);
-				g_z+= MOVE_STEP*cos(g_yaw*PI/180);break;
-	case '6': g_yaw-= ANGLE_STEP; break;
-	case '4': g_yaw+= ANGLE_STEP; break;
+	case '8':	
+		ocho = true; break;
+	case '2':	
+		dos = true; break;
+	case '6': 
+		seis = true; break;
+	case '4': 
+		cuatro = true; break;
 	case 27: exit(0);
+	}
+}
+
+void Keyboard2(unsigned char key, int x, int y)
+{
+	//keyboard callback function
+	switch (key)
+	{
+	case '8':	
+		ocho = false; break;
+	case '2':	
+		dos = false; break;
+	case '6': 
+		seis = false; break;
+	case '4': 
+		cuatro = false; break;
+	case 27: exit(0);
+	}
+}
+
+void BotonRaton(int button, int state, int x, int y){
+	if (button == GLUT_LEFT_BUTTON){
+		if (state == GLUT_DOWN){
+			botonPulsado = true;
+			mouseInicialX = x;
+			mouseInicialY = y;
+		}
+		else{
+			botonPulsado = false;
+		}
+	}
+}
+
+void MovimientoRaton(int x, int y){
+	if (botonPulsado){
+		mouseDeltaX = x - mouseInicialX;
+		mouseDeltaY = y - mouseInicialY;
 	}
 }
 
@@ -95,14 +138,17 @@ int main(int argc, char** argv)
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (1024, 768); 
 	glutCreateWindow (argv[0]);
-	glutFullScreen();
+	//glutFullScreen();
 
 
 	//callback functions
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
+	glutSetKeyRepeat(0);
 	glutKeyboardFunc(Keyboard);
-
+	glutKeyboardUpFunc(Keyboard2);
+	glutMouseFunc(BotonRaton);
+	glutMotionFunc(MovimientoRaton);
 
 	while (1)
 	{
@@ -111,11 +157,26 @@ int main(int argc, char** argv)
 		//"move" the cube
 		g_cubeAngle+= 0.1;
 		//queued events?
-		glutMainLoopEvent();
-
-
+		glutMainLoopEvent();	
 		//RENDER////////////////////
 		////////////////////////////
+		if (ocho){
+			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+		else if (dos){
+			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+		else if (seis){
+			g_yaw -= ANGLE_STEP;
+		}
+		else if (cuatro){
+			g_yaw += ANGLE_STEP;
+		}
+		if (botonPulsado){
+			
+		}
 		glutPostRedisplay();
 		glutSwapBuffers();
 	}

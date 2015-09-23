@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -45,9 +45,10 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>D:\Bortx\GitHub\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>D:\Bortx\GitHub\DSG-2015\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Bortx\GitHub\DSG-2015\lib;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Users\Bor\Documents\GitHub\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Users\Bor\Documents\GitHub\DSG-2015\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Bor\Documents\GitHub\DSG-2015\lib;$(LibraryPath)</LibraryPath>
+    <ReferencePath>C:\Users\Bor\Documents\GitHub\DSG-2015\bin;$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
