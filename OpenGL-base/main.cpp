@@ -16,7 +16,7 @@ float g_yaw= 0.0f;
 int g_w;
 int g_h;
 float g_cubeAngle= 0.f;
-bool ocho, dos, seis, cuatro, botonPulsado = false;
+bool btnOcho, btnDos, btnSeis, btnCuatro, botonPulsado = false;
 int mouseInicialX;
 int mouseInicialY;
 int mouseDeltaX;
@@ -29,13 +29,13 @@ void Keyboard(unsigned char key,int x, int y)
 	switch (key)
 	{
 	case '8':	
-		ocho = true; break;
+		btnOcho = true; break;
 	case '2':	
-		dos = true; break;
+		btnDos = true; break;
 	case '6': 
-		seis = true; break;
+		btnSeis = true; break;
 	case '4': 
-		cuatro = true; break;
+		btnCuatro = true; break;
 	case 27: exit(0);
 	}
 }
@@ -46,13 +46,13 @@ void Keyboard2(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case '8':	
-		ocho = false; break;
+		btnOcho = false; break;
 	case '2':	
-		dos = false; break;
+		btnDos = false; break;
 	case '6': 
-		seis = false; break;
+		btnSeis = false; break;
 	case '4': 
-		cuatro = false; break;
+		btnCuatro = false; break;
 	case 27: exit(0);
 	}
 }
@@ -160,22 +160,29 @@ int main(int argc, char** argv)
 		glutMainLoopEvent();	
 		//RENDER////////////////////
 		////////////////////////////
-		if (ocho){
+		/*
+		Movimiento con teclado
+		*/
+		if (btnOcho){
 			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
 			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
 		}
-		else if (dos){
+		else if (btnDos){
 			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
 			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
 		}
-		else if (seis){
+		else if (btnSeis){
 			g_yaw -= ANGLE_STEP;
 		}
-		else if (cuatro){
+		else if (btnCuatro){
 			g_yaw += ANGLE_STEP;
 		}
+		/*
+		Movimiento con raton
+		*/
 		if (botonPulsado){
-			
+			g_yaw += mouseDeltaX*0.0001;
+			g_pitch += mouseDeltaY*0.0001;
 		}
 		glutPostRedisplay();
 		glutSwapBuffers();

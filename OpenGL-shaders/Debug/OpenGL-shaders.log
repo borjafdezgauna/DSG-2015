@@ -1,4 +1,4 @@
-﻿Build started 23/09/2015 18:58:05.
+﻿Build started 25/09/2015 11:31:46.
      1>Project "C:\Users\Bor\Documents\GitHub\DSG-2015\OpenGL-shaders\OpenGL-shaders.vcxproj" on node 3 (Build target(s)).
      1>Link:
          OpenGL-shaders.vcxproj -> C:\Users\Bor\Documents\GitHub\DSG-2015\Debug\Programmable-pipeline Open-GL.exe
@@ -6,4 +6,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.07
+Time Elapsed 00:00:00.10
