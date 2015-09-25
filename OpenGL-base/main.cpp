@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-#define MOVE_STEP .005
+#define MOVE_STEP .01
 #define ANGLE_STEP 0.2
 #define PI 3.1416f
 
@@ -21,12 +21,9 @@ bool g_flag2 = false;
 bool g_flag4 = false;
 bool g_flag6 = false;
 
-bool g_flagLB = false;
-bool g_flagRB = false;
-int g_tempX = g_x;
-int g_tempY = g_y;
-int g_temp2X = g_x;
-int g_temp2Y = g_y;
+bool g_flagLeftDown = false;
+float g_xClick = 0.0f;
+float g_yClick = 0.0f;
 
 
 void Keyboard(unsigned char key,int x, int y)
@@ -78,40 +75,33 @@ void KeyboardUp(unsigned char key, int x, int y)
 	}
 }
 
-void Click(int button, int state, int x, int y){
-	if (button == GLUT_LEFT_BUTTON && state== GLUT_DOWN && !g_flagLB){
-		g_flagLB = true;
-		g_tempX = x;
-		g_tempY = y;
+void Click( int x, int y )
+{
+	if (g_xClick > x)
+	{
+		g_yaw -= 0.85;
 	}
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && g_flagLB){
-		//Ifs para direccion de camara
-		if (g_tempX < x){
-			g_yaw += (x - g_tempX)*ANGLE_STEP;
-		}
-		if (g_tempX > x){
-			g_yaw -= (g_tempX - x)*ANGLE_STEP;
-		}
-		if (g_tempY < y){
-			g_yaw += ANGLE_STEP;
-		}
-		if (g_tempY > y){
-			g_yaw -= ANGLE_STEP;
-		}
-
-		g_tempX = x;
-		g_tempY = y;
+	if (g_xClick < x)
+	{
+		g_yaw += 0.85;
 	}
 
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP){
-		g_flagLB = false;
+	g_xClick = x;
+	g_yClick = y;
+
+}
+
+void Click2(int button, int state, int x, int y)
+{
+	if (GLUT_LEFT_BUTTON == button && GLUT_DOWN == state)
+	{
+		g_flagLeftDown = true;
 	}
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
-		g_flagRB = true;
+	else
+	{
+		g_flagLeftDown = false;
 	}
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP){
-		g_flagRB = false;
-	}
+
 }
 
 void Set3DView()
@@ -183,9 +173,8 @@ int main(int argc, char** argv)
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(Keyboard2);
 	glutKeyboardUpFunc(KeyboardUp);
-	glutMouseFunc(Click);
-
-
+	glutMotionFunc(Click);
+	glutMouseFunc(Click2);
 
 
 	while (1)
@@ -220,16 +209,14 @@ int main(int argc, char** argv)
 		{
 			g_yaw += ANGLE_STEP;
 		}
-		/*
-		if (g_flagLB )
+		if ( g_flagLeftDown )
 		{
-			if (g_tempX < x){
-				g_yaw += ()*ANGLE_STEP;
-			}
-			if (g_tempX > x){
-				g_yaw -= ANGLE_STEP;
-			}			
-		}*/
+			glutSetCursor(GLUT_CURSOR_NONE);
+		}
+		else
+		{
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		}
 	}
    return 0;
 }
