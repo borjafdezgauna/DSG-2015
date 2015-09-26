@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-#define MOVE_STEP .4
+#define MOVE_STEP .01
 #define ANGLE_STEP 0.2
 #define PI 3.1416f
 
@@ -16,7 +16,14 @@ float g_yaw= 0.0f;
 int g_w;
 int g_h;
 float g_cubeAngle= 0.f;
+bool g_flag8 = false;
+bool g_flag2 = false;
+bool g_flag4 = false;
+bool g_flag6 = false;
 
+bool g_flagLeftDown = false;
+float g_xClick = 0.0f;
+float g_yClick = 0.0f;
 
 
 void Keyboard(unsigned char key,int x, int y)
@@ -34,6 +41,69 @@ void Keyboard(unsigned char key,int x, int y)
 	}
 }
 
+void Keyboard2(unsigned char key, int x, int y)
+{
+	//keyboard callback function
+	switch (key)
+	{
+	case '8':	g_flag8 = true;
+				break;
+	case '2':	g_flag2 = true;
+				break;
+	case '6': g_flag6 = true; 
+				break;
+	case '4': g_flag4 = true; 
+				break;
+	case 27: exit(0);
+	}
+}
+
+void KeyboardUp(unsigned char key, int x, int y)
+{
+	//keyboard callback function
+	switch (key)
+	{
+	case '8':	g_flag8 = false;
+		break;
+	case '2':	g_flag2 = false;
+		break;
+	case '6': g_flag6 = false;
+		break;
+	case '4': g_flag4 = false;
+		break;
+	case 27: exit(0);
+	}
+}
+
+void Click( int x, int y )
+{
+	if (g_xClick > x)
+	{
+		g_yaw -= 0.85;
+	}
+	if (g_xClick < x)
+	{
+		g_yaw += 0.85;
+	}
+
+	g_xClick = x;
+	g_yClick = y;
+
+}
+
+void Click2(int button, int state, int x, int y)
+{
+	if (GLUT_LEFT_BUTTON == button && GLUT_DOWN == state)
+	{
+		g_flagLeftDown = true;
+	}
+	else
+	{
+		g_flagLeftDown = false;
+	}
+
+}
+
 void Set3DView()
 {
 	//set projection matrix
@@ -49,8 +119,6 @@ void Set3DView()
 	glRotatef(-g_pitch, 1.0, 0.0, 0.0);	
 	glTranslatef(-g_x, -g_y, -g_z);
 }
-
-
 
 void DrawCube()
 {
@@ -95,13 +163,18 @@ int main(int argc, char** argv)
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (1024, 768); 
 	glutCreateWindow (argv[0]);
-	glutFullScreen();
+	glutSetKeyRepeat(0);
+
+	//glutFullScreen();
 
 
 	//callback functions
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
-	glutKeyboardFunc(Keyboard);
+	glutKeyboardFunc(Keyboard2);
+	glutKeyboardUpFunc(KeyboardUp);
+	glutMotionFunc(Click);
+	glutMouseFunc(Click2);
 
 
 	while (1)
@@ -118,6 +191,32 @@ int main(int argc, char** argv)
 		////////////////////////////
 		glutPostRedisplay();
 		glutSwapBuffers();
+
+		if (g_flag8){
+			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z -= MOVE_STEP*cos(g_yaw*PI / 180); 
+		} 
+		if(g_flag2)
+		{
+			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+		if (g_flag6)
+		{
+			g_yaw -= ANGLE_STEP;
+		}
+		if (g_flag4)
+		{
+			g_yaw += ANGLE_STEP;
+		}
+		if ( g_flagLeftDown )
+		{
+			glutSetCursor(GLUT_CURSOR_NONE);
+		}
+		else
+		{
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		}
 	}
    return 0;
 }
