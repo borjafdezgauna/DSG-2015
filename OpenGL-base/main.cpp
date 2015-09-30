@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-#define MOVE_STEP .4
+#define MOVE_STEP .01
 #define ANGLE_STEP 0.2
 #define PI 3.1416f
 
@@ -16,7 +16,13 @@ float g_yaw= 0.0f;
 int g_w;
 int g_h;
 float g_cubeAngle= 0.f;
-
+boolean ochoPulsado = false;
+boolean dosPulsado = false;
+boolean cuatroPulsado = false;
+boolean seisPulsado = false;
+boolean ratonPulsado = false;
+int Xpos;
+int diferencia;
 
 
 void Keyboard(unsigned char key,int x, int y)
@@ -24,14 +30,41 @@ void Keyboard(unsigned char key,int x, int y)
 	//keyboard callback function
 	switch (key)
 	{
-	case '8':	g_x-= MOVE_STEP*sin(g_yaw*PI/180);
-				g_z-= MOVE_STEP*cos(g_yaw*PI/180);break;
-	case '2':	g_x+= MOVE_STEP*sin(g_yaw*PI/180);
-				g_z+= MOVE_STEP*cos(g_yaw*PI/180);break;
-	case '6': g_yaw-= ANGLE_STEP; break;
-	case '4': g_yaw+= ANGLE_STEP; break;
+	case '8':	ochoPulsado = !ochoPulsado; break;
+	case '2':	dosPulsado = !dosPulsado;	break;
+	case '6':	seisPulsado = !seisPulsado;	break;
+	case '4':	cuatroPulsado = !cuatroPulsado;	break;
 	case 27: exit(0);
 	}
+}
+
+void Mouse(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		switch (state)
+		{
+		case GLUT_DOWN: 
+			if (!ratonPulsado)
+			{
+				ratonPulsado = true;
+				Xpos = x;
+			}
+			else{
+				diferencia = x - Xpos;
+			}
+			break;
+		
+		case GLUT_UP:     
+			ratonPulsado = false;
+			break;
+		}
+	}
+}
+
+void Motion(int x, int y)
+{
+	diferencia = x - Xpos;
 }
 
 void Set3DView()
@@ -96,13 +129,16 @@ int main(int argc, char** argv)
 	glutInitWindowSize (1024, 768); 
 	glutCreateWindow (argv[0]);
 	glutFullScreen();
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 
 
 	//callback functions
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(Keyboard);
-
+	glutKeyboardUpFunc(Keyboard);
+	glutMouseFunc(Mouse);
+	glutMotionFunc(Motion);
 
 	while (1)
 	{
@@ -110,6 +146,34 @@ int main(int argc, char** argv)
 		////////////////////////////
 		//"move" the cube
 		g_cubeAngle+= 0.1;
+
+		if (ochoPulsado)
+		{
+			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+
+		if (dosPulsado)
+		{
+			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z += MOVE_STEP*cos(g_yaw*PI / 180); 
+		}
+
+		if (seisPulsado)
+		{
+			g_yaw -= ANGLE_STEP; 
+		}
+
+		if (cuatroPulsado)
+		{
+			g_yaw += ANGLE_STEP; 
+		}
+
+		if (ratonPulsado)
+		{
+			g_yaw += diferencia * 0.0001;
+		}
+
 		//queued events?
 		glutMainLoopEvent();
 

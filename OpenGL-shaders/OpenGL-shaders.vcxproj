@@ -45,9 +45,9 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>D:\Bortx\GitHub\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>D:\Bortx\GitHub\DSG-2015\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Bortx\GitHub\DSG-2015\lib;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Users\Julen\Desktop\Curso 2015-2016\Desarrollo de Sistemas Gráficos\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Users\Julen\Desktop\Curso 2015-2016\Desarrollo de Sistemas Gráficos\DSG-2015\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Julen\Desktop\Curso 2015-2016\Desarrollo de Sistemas Gráficos\DSG-2015\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
