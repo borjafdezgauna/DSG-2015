@@ -2,10 +2,18 @@
 //
 
 #include "stdafx.h"
+#include "Cube.h"
 
 #define MOVE_STEP .4
 #define ANGLE_STEP 0.2
 #define PI 3.1416f
+
+float g_pos, g_posDif;
+bool  g_fdown = false;
+bool g_f2, g_f4, g_f6, g_f8, g_f5;
+CCube g_pCube1;
+CCube g_pCube2;
+
 
 float g_x=0.0f;
 float g_y=0.0f;
@@ -32,6 +40,47 @@ void Keyboard(unsigned char key,int x, int y)
 	case '4': g_yaw+= ANGLE_STEP; break;
 	case 27: exit(0);
 	}
+}
+
+void Keyboard2(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case '8':	g_f8 = true; break;
+
+	case '2':	g_f2 = true; break;
+
+	case '6': g_f6 = true; break;
+
+	case '4': g_f4 = true; break;
+
+	case'c':g_f5 = true; break;
+		
+	
+
+	case 27: exit(0);
+	}
+}
+
+void Keyboard3(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case '8':	g_f8 = false; break;
+
+	case '2':	g_f2 = false; break;
+
+	case '6': g_f6 = false; break;
+
+	case '4': g_f4 = false; break;
+
+	case'c':g_f5 = false; break;
+
+	case 27: exit(0);
+
+	}
+
+
 }
 
 void Set3DView()
@@ -70,7 +119,12 @@ void DrawScene(void)
 	Set3DView();
 
 	//draw the cube
-	DrawCube();
+	//DrawCube();
+	
+	g_pCube1.setPosition(0, 0, 0);
+	g_pCube1.setPosition(2, 5, 0);
+	g_pCube1.draw();
+	g_pCube2.draw();
 
 }
 
@@ -85,6 +139,25 @@ void Reshape (int w, int h)
 	glFrustum (-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
 }
 
+void Mouse(int button, int state, int x, int y){
+
+	if (GLUT_LEFT_BUTTON == button && GLUT_DOWN == state)
+	{
+		g_fdown = true;
+		g_pos = x;
+
+	}
+	if (GLUT_LEFT_BUTTON != button && GLUT_DOWN != state){
+		g_fdown = false;
+	}
+}
+
+void Movimiento(int x, int y){
+	if (g_fdown){
+		g_posDif = g_pos - x;
+	}
+}
+
 int main(int argc, char** argv)
 {
 
@@ -95,14 +168,24 @@ int main(int argc, char** argv)
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (1024, 768); 
 	glutCreateWindow (argv[0]);
-	glutFullScreen();
-
+	//glutFullScreen();
+	
 
 	//callback functions
 	glutDisplayFunc(DrawScene);
 	glutReshapeFunc(Reshape);
-	glutKeyboardFunc(Keyboard);
+	//glutKeyboardFunc(Keyboard);
+	glutKeyboardFunc(Keyboard2);
+	glutKeyboardUpFunc(Keyboard3);
+	glutMouseFunc(Mouse);
+	glutMotionFunc(Movimiento);
 
+	
+
+	if (g_f5){
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+	}
 
 	while (1)
 	{
@@ -113,6 +196,24 @@ int main(int argc, char** argv)
 		//queued events?
 		glutMainLoopEvent();
 
+		if (g_f2){
+			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+		if (g_f4){
+			g_yaw += ANGLE_STEP;
+		}
+		if (g_f6){
+			g_yaw -= ANGLE_STEP;
+		}
+		if (g_f8){
+			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
+		}
+
+		if (g_fdown){
+			g_yaw = g_posDif*0.2;
+		}
 
 		//RENDER////////////////////
 		////////////////////////////
