@@ -1,33 +1,38 @@
-// Test1.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
+
+#include "CCube.h"
 
 #define MOVE_STEP .004
 #define ANGLE_STEP .02
 #define PI 3.1416f
 
-float g_x=0.0f;
-float g_y=0.0f;
-float g_z=10.0f;
-float g_roll= 0.0f;
-float g_pitch= 0.0f;
-float g_yaw= 0.0f;
+// Variables globales
+float g_x = 0.0f;
+float g_y = 0.0f;
+float g_z = 10.0f;
+float g_roll = 0.0f;
+float g_pitch = 0.0f;
+float g_yaw = 0.0f;
 int g_w;
 int g_h;
-float g_cubeAngle= 0.f;
+float g_cubeAngle = 0.f;
 
-// Keyboard
+// Variables para el teclado (flags)
 bool up_pressed = false;
 bool down_pressed = false;
 bool left_pressed = false;
 bool right_pressed = false;
 
-// Mouse
+bool culling_enabled = false;
+bool solid_drawing = false;
+bool shade_model_smooth = true;
+
+// Variables para el raton
 bool mouse_left_clicked = false;
 int initialPos = 0;
 int mouseXDiff = 0;
 
+// Gestion del raton
 void Mouse(int button, int state, int x, int y)
 {
 	switch (button) 
@@ -52,32 +57,10 @@ void MouseMotion(int x, int y)
 	mouseXDiff = x - initialPos;
 }
 
+// Gestion del teclado
 void Keyboard(unsigned char key, int x, int y)
 {
-	/*
-	//keyboard callback function
-	switch (key)
-	{
-	case '8':
-		g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
-		g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
-		break;
-	case '2':	
-		g_x+= MOVE_STEP*sin(g_yaw*PI/180);
-		g_z+= MOVE_STEP*cos(g_yaw*PI/180);
-		break;
-	case '6': 
-		g_yaw-= ANGLE_STEP;
-		break;
-	case '4': 
-		g_yaw+= ANGLE_STEP;
-		break;
-	case 27: 
-		exit(0);
-	}
-	*/
-
-	//keyboard callback function
+	printf("Tecla pulsada: %c\n", key);
 	switch (key)
 	{
 	case '8':
@@ -92,91 +75,131 @@ void Keyboard(unsigned char key, int x, int y)
 	case '4':
 		left_pressed = !left_pressed;
 		break;
+	case 'c':
+		culling_enabled = !culling_enabled;
+		break;
+	case 'm':
+		solid_drawing = !solid_drawing;
+		break;
+	case 's':
+		shade_model_smooth = !shade_model_smooth;
+		break;
 	case 27:
 		exit(0);
 	}
 }
 
+void KeyboardUp(unsigned char key, int x, int y)
+{
+	printf("Tecla levantada: %c\n", key);
+	switch (key)
+	{
+	case '8':
+		up_pressed = !up_pressed;
+		break;
+	case '2':
+		down_pressed = !down_pressed;
+		break;
+	case '6':
+		right_pressed = !right_pressed;
+		break;
+	case '4':
+		left_pressed = !left_pressed;
+		break;
+	}
+}
+
 void Set3DView()
 {
-	//set projection matrix
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glFrustum (-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
+	// Establece la matriz de projeccion
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
 
-	//set modelview matrix
-	glMatrixMode (GL_MODELVIEW);
-	glLoadIdentity ();
+	// Establece la matriz ModelView
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 	glRotatef(-g_roll, 0.0, 0.0, 1.0);	
 	glRotatef(-g_yaw, 0.0, 1.0, 0.0);
 	glRotatef(-g_pitch, 1.0, 0.0, 0.0);	
 	glTranslatef(-g_x, -g_y, -g_z);
 }
 
-
-
 void DrawCube()
 {
 	glColor3f (0.5, 1.0, 0.5);
 	glMatrixMode(GL_MODELVIEW);
 	
-	glRotatef(g_cubeAngle,1.0,0.0,0.0);
+	glRotatef(g_cubeAngle, 1.0, 0.0, 0.0);
 	glutWireCube (1.0);
+}
+
+void DrawCCubes()
+{
+	CCube* cube1 = new CCube();
+	CCube* cube2 = new CCube();
+
+	cube1->setSize(2.33);
+	cube1->setPosition(-1, -1, -1);
+	cube2->setPosition(2, 2, 2);
+
+	cube1->draw(solid_drawing);
+	cube2->draw(solid_drawing);
 }
 
 void DrawScene(void)
 {
-	//clean the backbuffer
+	// Limpia el backBuffer
 	glClear (GL_COLOR_BUFFER_BIT);
-
-	//viewing transformation
+	
 	Set3DView();
 
-	//draw the cube
-	DrawCube();
+	// Diferentes parametros controlados mediante teclas
+	(culling_enabled) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+	(shade_model_smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
 
+	//DrawCube();
+	DrawCCubes();
 }
 
-void Reshape (int w, int h)
+void Reshape(int w, int h)
 {
-	//Reshape callback function
-	g_h= h;
-	g_w= w;
-	glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glFrustum (-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
+	g_h = h;
+	g_w = w;
+	glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
 }
 
 int main(int argc, char** argv)
 {
-
-	//INIT GLUT/////////////////////
-	////////////////////////////////
-	//init window and OpenGL context
+	// --- INIT GLUT -------------------------------------------------
+	
+	// Inicia la ventana y el contexto de OpenGL
 	glutInit(&argc, argv);
-	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (1024, 768); 
-	glutCreateWindow (argv[0]);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(1024, 768); 
+	glutCreateWindow(argv[0]);
 	//glutFullScreen();
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 
+	// FUNCIONES CALLBACK
+	// Se definen que funciones se llamaran para cuando ocurre determianadas operaciones
+	// Reciben como parametro la fucncion que se va a llamar
+	glutDisplayFunc(DrawScene); // la función para dibujar
+	glutReshapeFunc(Reshape); // La funcion para redimensionar la ventana
+	glutKeyboardFunc(Keyboard); // La funcion para cuando se pulsan las teclas
+	glutKeyboardUpFunc(KeyboardUp); // La funcion para cuando se levantan las teclas
+	glutMouseFunc(Mouse); // la fucion para cuando se pulasn los botones del raton
+	glutMotionFunc(MouseMotion); // la funcion para cuando se mueve el raton
 
-	//callback functions
-	glutDisplayFunc(DrawScene);
-	glutReshapeFunc(Reshape);
-	glutKeyboardFunc(Keyboard);
-	glutKeyboardUpFunc(Keyboard);
-	glutMouseFunc(Mouse);
-	glutMotionFunc(MouseMotion);
-
-
-	while (1)
+	while (1) // Bucle principal
 	{
-		//UPDATE////////////////////
-		////////////////////////////
-		//"move" the cube
-		g_cubeAngle+= 0.1;
+		// --- UPDATE ------------------------------------------------
+
+		// Mueve el cubo
+		g_cubeAngle += 0.1;
 
 		if (up_pressed)
 		{
@@ -207,11 +230,11 @@ int main(int argc, char** argv)
 		//queued events?
 		glutMainLoopEvent();
 
+		//--- RENDER ------------------------------------------------
 
-		//RENDER////////////////////
-		////////////////////////////
 		glutPostRedisplay();
 		glutSwapBuffers();
 	}
-   return 0;
+
+	return 0;
 }

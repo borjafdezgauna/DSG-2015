@@ -45,9 +45,9 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>C:\Users\Ander\Mega\Documentos\Uni\4 - Cuarto\Laboratorios\DSG\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Users\Ander\Mega\Documentos\Uni\4 - Cuarto\Laboratorios\DSG\DSG-2015\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Ander\Mega\Documentos\Uni\4 - Cuarto\Laboratorios\DSG\DSG-2015\lib;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Users\Ander\Dropbox\Documentos\Uni\4 - Cuarto\Laboratorios\DSG\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Users\Ander\Dropbox\Documentos\Uni\4 - Cuarto\Laboratorios\DSG\DSG-2015\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Ander\Dropbox\Documentos\Uni\4 - Cuarto\Laboratorios\DSG\DSG-2015\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
