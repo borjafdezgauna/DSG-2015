@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "CCube.h"
 
 #define MOVE_STEP .008
 #define ANGLE_STEP 0.05
@@ -16,69 +17,94 @@ float g_yaw= 0.0f;
 int g_w;
 int g_h;
 float g_cubeAngle= 0.f;
-bool ocho = false;
-bool dos = false;
-bool seis = false;
-bool cuatro = false;
+
+// keyboard btns pressed 
+bool eight = false;
+bool two = false;
+bool six = false;
+bool four = false;
 bool esc = false;
-bool mou = false;
+
+
 int m_x = 0;
 int m_y = 0;
-int cantX = 0;
-int cantY = 0;
-bool primer = true;
-int nuevaX = 0;
-bool pulsado = false;
+
+// mouse rotation
+bool mouse_left_clicked  = false;
+int mouse_first_position = 0;
+int mouse_X_Diff = 0;
+
+
+CCube * g_pCube1;
+CCube * g_pCube2;
 
 
 
 void Keyboard(unsigned char key,int x, int y)
 {
 	//keyboard callback function
-	switch (key)
-	{
-	case '8':	ocho = true;break;
-	case '2':	dos = true;break;
-	case '6':   seis = true; break;
-	case '4':   cuatro = true; break;
-	case 27: esc = true;
+	switch (key){
+		case '8':	
+			eight = true;
+			break;
+		case '2':	
+			two = true;
+			break;
+		case '6':   
+			six = true; 
+			break;
+		case '4':   
+			four = true; 
+			break;
+		case 27: 
+			esc = true;
 	}
 }
 
 void Keyboard2(unsigned char key, int x, int y)
 {
 	//keyboard callback function
-	switch (key)
-	{
-	case '8':	ocho = false; break;
-	case '2':	dos = false; break;
-	case '6':   seis = false; break;
-	case '4':   cuatro = false; break;
-	case 27: esc = false;
+	switch (key){
+		case '8':	
+			eight = false; 
+			break;
+		case '2':	
+			two = false; 
+			break;
+		case '6':   
+			six = false; 
+			break;
+		case '4':   
+			four = false; 
+			break;
+		case 27: 
+			esc = false;
 	}
 }
 
 void Mouse(int button, int state, int x, int y)
 {
-	if (state == GLUT_DOWN)
+
+	switch (button)
 	{
-		if (primer == true){
-			m_x = x;
-			primer = false;
-			pulsado = true;
+	case GLUT_LEFT_BUTTON:
+		switch (state)
+		{
+		case GLUT_DOWN:
+			mouse_left_clicked = true;
+			mouse_first_position = x;
+			break;
+		case GLUT_UP:
+			mouse_left_clicked = false;
+			break;
 		}
-		else{
-			pulsado = true;
-			nuevaX = x;
-		}
-	}
-	else{
-		pulsado = false;
+		break;
 	}
 }
 
 void MouseMotion(int x, int y){
-
+	
+		mouse_X_Diff = x - mouse_first_position;
 }
 
 void Set3DView()
@@ -143,6 +169,7 @@ int main(int argc, char** argv)
 	glutInitWindowSize (1024, 768); 
 	glutCreateWindow (argv[0]);
 	//glutFullScreen();
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 
 
 	//callback functions
@@ -150,9 +177,18 @@ int main(int argc, char** argv)
 	glutReshapeFunc(Reshape);
 	glutKeyboardFunc(Keyboard);
 	glutKeyboardUpFunc(Keyboard2);
-	glutSetKeyRepeat(0x0000);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(MouseMotion);
+
+
+	// cube 
+	g_pCube1 = new CCube(0.5);
+	g_pCube2 = new CCube(2);
+
+	g_pCube1->setPosition(2, 2, 2);
+	g_pCube2->setPosition(3, 3, 3);
+
+	g_pCube1->draw();
 
 	while (1)
 	{
@@ -163,22 +199,24 @@ int main(int argc, char** argv)
 		//queued events?
 		glutMainLoopEvent();
 
+		g_pCube1->draw();
+		
 		//Mover cubo si alguna flag es true
-		if (ocho == true)
+		if (eight == true)
 		{
 			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
 			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
 		}
-		if (dos == true)
+		if (two == true)
 		{
 			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
 			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
 		}
-		if (cuatro == true)
+		if (four == true)
 		{
 			g_yaw += ANGLE_STEP;
 		}
-		if (seis == true)
+		if (six == true)
 		{
 			g_yaw -= ANGLE_STEP;
 		}
@@ -187,13 +225,8 @@ int main(int argc, char** argv)
 			exit(0);
 		}
 
-		if (pulsado){
-			if (nuevaX - m_x > 0){
-				g_yaw -= (nuevaX - m_x)*0.00001;
-			}
-			else{
-				g_yaw -= (nuevaX - m_x)*0.00001;
-			}
+		if (mouse_left_clicked) {
+			g_yaw += mouse_X_Diff * 0.00004;
 		}
 
 		//RENDER////////////////////
@@ -201,5 +234,6 @@ int main(int argc, char** argv)
 		glutPostRedisplay();
 		glutSwapBuffers();
 	}
+
    return 0;
 }

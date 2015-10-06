@@ -1,27 +1,9 @@
-﻿Build started 23/09/2015 18:56:48.
-     1>Project "C:\Users\Joseba\Documents\GitHub\DSG-2015\OpenGL-shaders\OpenGL-shaders.vcxproj" on node 3 (Rebuild target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\Programmable-pipeline Open-GL.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
-         stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Programmable-pipeline Open-GL.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt GLExtensions.cpp main.cpp
-         main.cpp
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(28): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(29): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(30): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(31): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(32): warning C4305: '-=' : truncation from 'double' to 'float'
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(33): warning C4305: '+=' : truncation from 'double' to 'float'
-     1>c:\users\joseba\documents\github\dsg-2015\opengl-shaders\main.cpp(174): warning C4305: '+=' : truncation from 'double' to 'float'
-         GLExtensions.cpp
-         Generating Code...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Joseba\Documents\GitHub\DSG-2015\Debug\Programmable-pipeline Open-GL.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Joseba\Documents\GitHub\DSG-2015\Debug\Programmable-pipeline Open-GL.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Joseba\Documents\GitHub\DSG-2015\Debug\Programmable-pipeline Open-GL.lib" /MACHINE:X86 /SAFESEH Debug\GLExtensions.obj
-         Debug\main.obj
-         Debug\stdafx.obj
-     1>GLExtensions.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+﻿Build started 27/09/2015 21:55:59.
+     1>Project "C:\Users\Joseba\Documents\GitHub\DSG-2015\OpenGL-shaders\OpenGL-shaders.vcxproj" on node 3 (Build target(s)).
+     1>Link:
          OpenGL-shaders.vcxproj -> C:\Users\Joseba\Documents\GitHub\DSG-2015\Debug\Programmable-pipeline Open-GL.exe
-     1>Done Building Project "C:\Users\Joseba\Documents\GitHub\DSG-2015\OpenGL-shaders\OpenGL-shaders.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Users\Joseba\Documents\GitHub\DSG-2015\OpenGL-shaders\OpenGL-shaders.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.09
+Time Elapsed 00:00:00.39

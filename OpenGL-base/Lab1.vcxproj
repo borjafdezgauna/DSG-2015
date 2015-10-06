@@ -45,9 +45,9 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>C:\Users\Joseba\Documents\GitHub\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Users\Joseba\Documents\GitHub\DSG-2015\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Joseba\Documents\GitHub\DSG-2015\lib;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>D:\Aldo\TVZ\Erasmus\Predmeti\Desarollo de Sistemas Graficos\Novi\DSG-2015\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\Aldo\TVZ\Erasmus\Predmeti\Desarollo de Sistemas Graficos\Novi\DSG-2015\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Aldo\TVZ\Erasmus\Predmeti\Desarollo de Sistemas Graficos\Novi\DSG-2015\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CCube.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -98,6 +99,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCube.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
