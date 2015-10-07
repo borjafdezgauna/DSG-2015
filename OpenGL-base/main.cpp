@@ -185,10 +185,11 @@ int main(int argc, char** argv)
 	g_pCube1 = new CCube(0.5);
 	g_pCube2 = new CCube(2);
 
-	g_pCube1->setPosition(2, 2, 2);
-	g_pCube2->setPosition(3, 3, 3);
+	
+	g_pCube1->setPosition(-2, -2, -2);
+	g_pCube2->setPosition(2, -2, -2);
 
-	g_pCube1->draw();
+	
 
 	while (1)
 	{
@@ -200,6 +201,7 @@ int main(int argc, char** argv)
 		glutMainLoopEvent();
 
 		g_pCube1->draw();
+		g_pCube2->draw();
 		
 		//Mover cubo si alguna flag es true
 		if (eight == true)
