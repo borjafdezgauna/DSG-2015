@@ -17,3 +17,8 @@ Debug/Programmable-pipeline Open-GL.ilk
 Debug/Fixed-pipeline Open-GL.ilk
 OpenGL-base/Debug/Fixed-pipeline Open-GL.pch
 OpenGL-base/Debug/vc120.pdb
+*.pdb
+Debug/Fixed-pipeline Open-GL.pdb
+*.pdb
+Debug/Fixed-pipeline Open-GL.pdb
+Thumbs.db

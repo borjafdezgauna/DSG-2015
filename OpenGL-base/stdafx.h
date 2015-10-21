@@ -12,10 +12,14 @@
 #include <windows.h>
 #include <math.h>
 
-//OPENGL includes
+// OPENGL includes
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-//FreeGLUT includes
+// FreeGLUT includes
 #include <glut.h>
 #include <freeglut_ext.h>
+
+// SOIL includes
+#include <SOIL.h>
+#pragma comment(lib, "SOIL.lib")

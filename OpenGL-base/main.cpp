@@ -17,15 +17,20 @@ int g_w;
 int g_h;
 float g_cubeAngle = 0.f;
 
+CCube* cube1;
+CCube* cube2;
+GLuint textureID;
+
 // Variables para el teclado (flags)
 bool up_pressed = false;
 bool down_pressed = false;
 bool left_pressed = false;
 bool right_pressed = false;
 
-bool culling_enabled = false;
-bool solid_drawing = false;
+bool culling_enabled = true;
+bool solid_drawing = true;
 bool shade_model_smooth = true;
+bool enable_lighting = true;
 
 // Variables para el raton
 bool mouse_left_clicked = false;
@@ -60,7 +65,7 @@ void MouseMotion(int x, int y)
 // Gestion del teclado
 void Keyboard(unsigned char key, int x, int y)
 {
-	printf("Tecla pulsada: %c\n", key);
+	printf("Pressed Key: %c\n", key);
 	switch (key)
 	{
 	case '8':
@@ -84,6 +89,9 @@ void Keyboard(unsigned char key, int x, int y)
 	case 's':
 		shade_model_smooth = !shade_model_smooth;
 		break;
+	case 'l':
+		enable_lighting = !enable_lighting;
+		break;
 	case 27:
 		exit(0);
 	}
@@ -91,7 +99,7 @@ void Keyboard(unsigned char key, int x, int y)
 
 void KeyboardUp(unsigned char key, int x, int y)
 {
-	printf("Tecla levantada: %c\n", key);
+	printf("Released Key: %c\n", key);
 	switch (key)
 	{
 	case '8':
@@ -123,6 +131,28 @@ void Set3DView()
 	glRotatef(-g_yaw, 0.0, 1.0, 0.0);
 	glRotatef(-g_pitch, 1.0, 0.0, 0.0);	
 	glTranslatef(-g_x, -g_y, -g_z);
+
+	// Culling
+	if (culling_enabled) 
+		glEnable(GL_CULL_FACE);
+	else 
+		glDisable(GL_CULL_FACE);
+
+	// Shade model
+	if (shade_model_smooth)
+		glShadeModel(GL_SMOOTH);
+	else
+		glShadeModel(GL_FLAT);
+
+	// Iluminacion
+	if (enable_lighting) {
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0); // Activamos la luz #0
+	}
+	else {
+		glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHT0); // Desactivamos la luz #0
+	}
 }
 
 void DrawCube()
@@ -136,13 +166,6 @@ void DrawCube()
 
 void DrawCCubes()
 {
-	CCube* cube1 = new CCube();
-	CCube* cube2 = new CCube();
-
-	cube1->setSize(2.33);
-	cube1->setPosition(-1, -1, -1);
-	cube2->setPosition(2, 2, 2);
-
 	cube1->draw(solid_drawing);
 	cube2->draw(solid_drawing);
 }
@@ -153,10 +176,6 @@ void DrawScene(void)
 	glClear (GL_COLOR_BUFFER_BIT);
 	
 	Set3DView();
-
-	// Diferentes parametros controlados mediante teclas
-	(culling_enabled) ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-	(shade_model_smooth) ? glShadeModel(GL_SMOOTH) : glShadeModel(GL_FLAT);
 
 	//DrawCube();
 	DrawCCubes();
@@ -175,11 +194,11 @@ void Reshape(int w, int h)
 int main(int argc, char** argv)
 {
 	// --- INIT GLUT -------------------------------------------------
-	
+
 	// Inicia la ventana y el contexto de OpenGL
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(1024, 768); 
+	glutInitWindowSize(1024, 768);
 	glutCreateWindow(argv[0]);
 	//glutFullScreen();
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
@@ -194,37 +213,60 @@ int main(int argc, char** argv)
 	glutMouseFunc(Mouse); // la fucion para cuando se pulasn los botones del raton
 	glutMotionFunc(MouseMotion); // la funcion para cuando se mueve el raton
 
+	// Propiedades de la iluminacion para GL_LIGHT0
+	GLfloat light_ambient [] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_difuse [] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_specular [] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_direction [] = { -1.0, -1.0, -1.0 };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_difuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light_direction);
+
+	// Cargar la textura
+	
+
+	// Los cubos para dibujar
+	cube1 = new CCube();
+	cube2 = new CCube();
+	cube1->setSize(2.33f);
+	cube1->setPosition(-1, -1, -1);
+	cube2->setPosition(2, 2, 2);
+	cube1->setTexture("diamond.png");
+	cube2->setTexture("diamond.png");
+
+
 	while (1) // Bucle principal
 	{
 		// --- UPDATE ------------------------------------------------
 
 		// Mueve el cubo
-		g_cubeAngle += 0.1;
+		g_cubeAngle += 0.1f;
 
 		if (up_pressed)
 		{
-			g_x -= MOVE_STEP*sin(g_yaw*PI / 180);
-			g_z -= MOVE_STEP*cos(g_yaw*PI / 180);
+			g_x -= (float) MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z -= (float) MOVE_STEP*cos(g_yaw*PI / 180);
 		}
 
 		if (down_pressed)
 		{
-			g_x += MOVE_STEP*sin(g_yaw*PI / 180);
-			g_z += MOVE_STEP*cos(g_yaw*PI / 180);
+			g_x += (float) MOVE_STEP*sin(g_yaw*PI / 180);
+			g_z += (float) MOVE_STEP*cos(g_yaw*PI / 180);
 		}
 
 		if (left_pressed)
 		{
-			g_yaw -= ANGLE_STEP;
+			g_yaw -= (float) ANGLE_STEP;
 		}
 
 		if (right_pressed)
 		{
-			g_yaw += ANGLE_STEP;
+			g_yaw += (float) ANGLE_STEP;
 		}
 
 		if (mouse_left_clicked) {
-			g_yaw += mouseXDiff * 0.0001;
+			g_yaw += mouseXDiff * 0.0001f;
 		}
 
 		//queued events?
